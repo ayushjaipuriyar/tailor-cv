@@ -1,0 +1,241 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+% provide ActualText support so we can embed invisible text in the PDF text layer
+\usepackage{accsupp}
+\usepackage[margin=0.35in]{geometry} 
+\input{glyphtounicode}
+\setlength{\footskip}{5pt}
+
+%----------FONT OPTIONS----------
+% sans-serif
+% \usepackage[sfdefault]{FiraSans}
+\usepackage[sfdefault]{roboto}
+% \usepackage[sfdefault]{noto-sans}
+% \usepackage[default]{sourcesanspro}
+
+% serif
+% \usepackage{CormorantGaramond}
+% \usepackage{charter}
+
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% % Adjust margins
+% \addtolength{\oddsidemargin}{-0.5in}
+% \addtolength{\evensidemargin}{-0.5in}
+% \addtolength{\textwidth}{1in}
+% \addtolength{\topmargin}{-.5in}
+% \addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+    \vspace{-10pt}\bfseries\scshape\raggedright\Large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% Ensure that generate pdf is machine readable/ATS parsable
+\pdfgentounicode=1
+
+%-------------------------
+% Custom commands (Jake template)
+\newcommand{\resumeItem}[1]{
+    \item\small{
+        {#1 \vspace{-4pt}}
+    }
+}
+
+\newcommand{\resumeSubheading}[4]{
+    \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+        \textbf{#1} & #2 \\
+        \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+% Education-specific entry (similar to resumeSubheading but tailored for education)
+\newcommand{\resumeEducationEntry}[3]{
+    \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+            \textbf{#1} $|$ #2 & #3 \\
+    \end{tabular*}\vspace{-7pt}
+}
+\newcommand{\hidden}[1]{\begingroup\setbox0=\hbox{#1}\endgroup}
+\newcommand{\invisible}[1]{%
+  \leavevmode%
+  \makebox[0pt][l]{\textcolor{white}{\tiny #1}}%
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small#1} & \textit{\small #2} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[3]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small\textbf{#1} $|$ #2 & #3 \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=5pt, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=10pt]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%----------HEADING----------
+% pull heading up slightly to reduce top margin
+\vspace*{-30pt}
+\begin{center}
+    \textbf{\Huge \scshape Ayush Jaipuriyar} \\ \vspace{4pt}
+    \small \href{tel:+447721170466}{\underline{+44 7721170466}} $|$ \href{mailto:ayushjaipuriyar21@gmail.com}{\underline{ayushjaipuriyar21@gmail.com}} $|$
+    \href{https://www.linkedin.com/in/ayushjaipuriyar}{\underline{LinkedIn}} $|$
+    \href{https://github.com/ayushjaipuriyar/}{\underline{Github}} $|$ Glasgow, UK
+\end{center}
+%-----------SUMMARY-----------
+\section{Summary}
+\noindent
+Full stack Software Engineer specializing in scalable, fault-tolerant distributed systems and APIs; experienced with AWS, Docker, Kubernetes and CI/CD — cut API latency 800 ms → 200 ms and deployments 3 h → 10 m.
+\section{Education}
+\resumeSubHeadingListStart
+\resumeEducationEntry{M.Sc. in Computer Science}{University of Glasgow}{Sep 2024 -- Sep 2025}
+\resumeEducationEntry{B.Tech. in Information Technology}{Manipal University Jaipur}{Jun 2020 -- Jun 2024}
+\resumeSubHeadingListEnd
+
+
+%-----------PROFESSIONAL EXPERIENCE-----------
+\section{Experience}
+\resumeSubHeadingListStart
+\resumeSubheading
+{Software Developer | Full Stack | Backend Intern}{Jan 2024 -- Aug 2024}
+{Healthtrip $|$ NestJS, Elasticsearch, Redis, JWT/OAuth2, Jenkins, GitHub Actions, AWS, Cloudflare}{Noida, India}
+\resumeItemListStart
+\resumeItem{Refactored and migrated \textbf{50\%} of a PHP monolith into NestJS microservices, reducing API latency by \textbf{38\%} (400ms $\rightarrow$ 250ms) for \textbf{10,000+} daily users.}
+\resumeItem{Built a self-serve partner platform (Kong, OAuth2, Redis), automating onboarding from \textbf{4 days} to \textbf{10 minutes} and increasing partner acquisition by \textbf{60\%}.}
+\resumeItem{Implemented multi-tier Redis caching (reduced DB load by \textbf{70\%}) and automated Docker/Kubernetes CI/CD to enable \textbf{zero-downtime} releases and accelerate UI data retrieval by \textbf{90\%}.}
+\resumeItem{Engineered a fault-tolerant backend translation system supporting \textbf{9} languages and \textbf{5,000+} entries/day, delivering \textbf{100\%} uptime and boosting global engagement by \textbf{70\%}.}
+\resumeItem{Integrated Elasticsearch with multilingual/fuzzy search, improving cross-language matching by \textbf{60\%} and increasing user engagement by \textbf{70\%}.}
+\resumeItem{Automated CI/CD (Jenkins, GitHub Actions, Docker, K8s) and configured AWS/Cloudflare (WAF/CDN) to double release frequency, halve page load times (\textbf{3.2s} $\rightarrow$ \textbf{1.6s}), and maintain \textbf{99.9\%} uptime.}
+% \resumeItem{Accelerated \textbf{full-stack} development by refactoring \textbf{50\%} of a PHP monolith into scalable NestJS microservices, enabling faster \textbf{React/Next.js} feature releases and cutting API latency by \textbf{38\%} (400ms $\rightarrow$ 250ms) for \textbf{10,000+} daily users.}
+% \resumeItem{Engineered a \textbf{self-serve partner platform} by deploying a secure API Gateway (Kong, OAuth2, Redis), creating a full-stack solution that automated portal launches and cut onboarding time from \textbf{4 days to 10 minutes}, boosting partner acquisition by \textbf{60\%}.}
+% \resumeItem{Mastered the \textbf{full-stack application lifecycle} by implementing multi-tier Redis caching (slashing DB load \textbf{70\%}) and automating \textbf{Docker/Kubernetes} deployments, enabling \textbf{zero-downtime releases} and boosting data retrieval for the UI by \textbf{90\%}.}
+% \resumeItem{Delivered a \textbf{full-stack internationalization} feature by engineering a fault-tolerant backend translation system (9 languages, \textbf{5,000+} entries/day); achieved \textbf{100\%} uptime via robust failover, boosting global user engagement by \textbf{70\%}.}
+% \resumeItem{Developed a \textbf{full-stack search feature} by integrating advanced Elasticsearch, implementing multilingual/fuzzy search to improve cross-language matching by \textbf{60\%} and increase user engagement by \textbf{70\%} across international markets.}
+% \resumeItem{Owned the \textbf{end-to-end DevOps lifecycle} and full-stack performance; automated CI/CD (Jenkins, Actions, Docker, K8s) to \textbf{double release frequency} and configured AWS/Cloudflare (WAF/CDN) to \textbf{slash page loads by 50\%} (3.2s $\rightarrow$ 1.6s) and guarantee \textbf{99.9\%} uptime.}
+\resumeItemListEnd
+
+\resumeSubheading
+{Software Developer Intern}{Jun 2023 -- Aug 2023}
+{AST Consulting $|$ NestJS, React.js, MongoDB, GitHub Actions}{New Delhi, India}
+\resumeItemListStart
+% \resumeItem{Architected and led full-stack development (React, NestJS) for a global SaaS automation platform serving \textbf{5,000+} active users, deploying scalable microservices on AWS.}
+% \resumeItem{Engineered and automated cloud infrastructure, implementing CI/CD pipelines (GitHub Actions) for AWS EC2 and leveraging CloudFront CDN to cut image load times by \textbf{50\%} while maintaining \textbf{99.5\%} uptime.}
+% \resumeItem{Drove backend scalability and performance, optimizing MongoDB queries to reduce average response times by ~\textbf{45\%} (to \textbf{190ms}) and enabling the system to handle \textbf{1,500+} concurrent API requests.}
+% \resumeItem{Designed and implemented a unified API layer (REST/GraphQL) integrating Stripe/Chargebee billing for \textbf{2,000+} paying users, WhatsApp (WATI), and OpenAI for automation and billing workflows.}
+% \resumeItem{Established a data-driven monitoring loop using Google Analytics and Microsoft Clarity, translating user-behavior insights into targeted optimizations for React dashboards and automated backend workflows.}
+% \resumeItem{Developed and deployed an automated cross-platform posting solution (Telegram, WhatsApp), creating a feature that directly increased user engagement by ~\textbf{35\%}.}
+\resumeItem{Led full-stack SaaS platform (React, NestJS) for 5,000+ users, deploying scalable microservices on AWS.}
+\resumeItem{Automated CI/CD (GitHub Actions) for AWS EC2, leveraged CloudFront CDN to cut image loads 50\% with 99.5\% uptime.}
+\resumeItem{Optimized MongoDB queries (–45\% latency, 190ms), supporting 1,500+ concurrent requests.}
+\resumeItem{Built unified REST/GraphQL API integrating Stripe/Chargebee billing, WhatsApp (WATI), and OpenAI automations.}
+\resumeItem{Used Google Analytics and Clarity to drive UX and workflow improvements.}
+\resumeItem{Developed cross-platform posting (Telegram, WhatsApp), increasing engagement ~35\%.}
+\resumeItemListEnd
+\resumeSubHeadingListEnd
+
+%-----------PROJECTS-----------
+\section{Projects}
+\resumeSubHeadingListStart
+\resumeProjectHeading
+{LeetCode MCP Server}{Node.js, TypeScript, Express, WebSocket}{\href{https://github.com/ayushjaipuriyar/leetcode-mcpserver}{Github}}
+\resumeItemListStart
+\resumeItem{Developed an MCP server with 15+ tools and 5 endpoints, delivering median responses <150ms and real-time submission streaming that cut manual testing overhead 80\%.}
+\resumeItemListEnd
+
+\resumeProjectHeading
+{Segmentor}{Python, ffmpeg, tkinter}{\href{https://github.com/ayushjaipuriyar/animepahe-dl}{Github}}
+\resumeItemListStart
+\resumeItem{Created a Python CLI to download 100+ .m3u8 segments in parallel and assemble streams via ffmpeg in $\leq$60s, improving throughput 10x and reliability ~70\%.}
+\resumeItemListEnd
+
+\resumeProjectHeading
+{Near-RT RIC ML-based Malicious Traffic Detection }{Python, PyTorch, Open Ran}{\href{https://github.com/ayushjaipuriyar/ric-xapps-malicious-detection}{Github}}
+\resumeItemListStart
+\resumeItem{Built an ML pipeline on Near-RT RIC with xApps for real-time traffic analysis; classifiers achieved 67--73\% accuracy and F1 up to 76\%.}
+\resumeItemListEnd
+
+\resumeProjectHeading
+{Vantage-14are05 }{Linux, ACPI, Bash}{\href{https://github.com/ayushjaipuriyar/vantage-14are05}{Github}}
+\resumeItemListStart
+\resumeItem{Produced a Linux utility exposing ACPI performance and battery tuning controls with profile switching, reducing battery discharge 20--30\% and attracting community contributions.}
+\resumeItemListEnd
+\resumeSubHeadingListEnd
+
+%-----------TECHNICAL SKILLS-----------
+\section{Technical Skills}
+\small
+\begin{tabularx}{\textwidth}{@{}l X}
+    \textbf{Languages:}      & Java, C/C++, Python, JavaScript, TypeScript, SQL, Bash                            \\
+    \textbf{Frameworks:}     & React, Next.js, Redux, Node.js, NestJS, Express, Flask, Django                    \\
+    \textbf{Databases:}      & SQL, PostgreSQL, MySQL, MongoDB, Redis, Elasticsearch                             \\
+    \textbf{DevOps / Cloud:} & AWS (EC2, S3, CloudFront), Docker, Kubernetes, Terraform, GitHub Actions, Jenkins \\
+    \textbf{Observability:}  & Prometheus, Grafana, CloudWatch                                                   \\
+\end{tabularx}
+
+
+
+%-----------PUBLICATIONS-----------
+\section{Publications}
+\resumeSubHeadingListStart
+\resumeSubheading
+{A Lossless Image Encryption Technique using Chaotic Map and DNA Encoding}{2025}
+{Multimedia Tools and Applications, Apr. 2025}{}
+\resumeSubHeadingListEnd
+
+%-----------CERTIFICATIONS-----------
+% \section{Certifications}
+% \begin{itemize}[leftmargin=0.15in, label={},itemsep=0pt,parsep=0pt]
+%     \small{
+%     \item{\textbf{Node.js, Express, MongoDB \& More: The Complete Bootcamp}{- Udemy}}
+%     \item{\textbf{Learn Python Programming Masterclass}{- Udemy}}
+%     \item{\textbf{AWS Machine Learning Foundations}{- Udacity}}
+%     \item{\textbf{React - The Complete Guide}{- Udemy}}
+%     \item{\textbf{Red Hat System Administration I \& II (RH124/RH134)}{- Red Hat}}
+%     \item{\textbf{C and C++ Specialization (with Honors)}{- Coursera}}
+%     \item{\textbf{JavaScript - The Complete Guide}{- Udemy}}
+%           }
+% \end{itemize}
+
+%-------------------------------------------
+\end{document}
