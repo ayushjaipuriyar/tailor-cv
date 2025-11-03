@@ -3,8 +3,8 @@ import fs from "fs";
 import { NextResponse } from "next/server";
 import os from "os";
 import path from "path";
-import { pipeline } from "stream/promises";
 import { Readable } from "stream";
+import { pipeline } from "stream/promises";
 
 // Simple in-memory rate limiter (per IP). Works for single-process dev/server only.
 const RATE_LIMIT_WINDOW_MS = 60_000; // 1 minute

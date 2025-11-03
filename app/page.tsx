@@ -55,7 +55,8 @@ export default function Page() {
         if (previewUrl) URL.revokeObjectURL(previewUrl);
       } catch {}
       setPreviewUrl(pdfUrl);
-      setActiveTab("pdf");
+  setLastPreviewContent(tailoredTex);
+  setActiveTab("pdf");
     } catch (err: any) {
       setError(err?.message || "Failed to generate PDF preview.");
     } finally {
@@ -152,13 +153,63 @@ export default function Page() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, result, baseTex, previewUrl]);
 
+  const compilePreview = async () => {
+    setError("");
+    setCompiling(true);
+    try {
+      const texContent = result || baseTex;
+      // If nothing changed since last preview, skip compile
+      if (!texContent) throw new Error("No LaTeX content to compile");
+      const form = new FormData();
+      form.append("file", new Blob([texContent], { type: "text/x-tex" }), "main.tex");
+
+      const res = await fetch("/api/compile/upload", {
+        method: "POST",
+        body: form,
+      });
+      if (!res.ok) {
+        const text = await res.text();
+        setError(`Compilation failed.` + (text ? `\nLaTeX log:\n${text}` : ""));
+        return false;
+      }
+      const pdfBlob = await res.blob();
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+      try {
+        if (previewUrl) URL.revokeObjectURL(previewUrl);
+      } catch {}
+      setPreviewUrl(pdfUrl);
+      setLastPreviewContent(texContent);
+      return true;
+    } catch (err: any) {
+      setError(err?.message || "Failed to generate PDF preview.");
+      return false;
+    } finally {
+      setCompiling(false);
+    }
+  };
+  // When switching to PDF tab, compile only if content changed since last preview
+  const onTabChange = async (val: string) => {
+    setActiveTab(val);
+    if (val === "pdf") {
+      const texContent = result || baseTex;
+      if (!texContent) {
+        setError("No LaTeX content available to preview.");
+        return;
+      }
+      if (previewUrl && lastPreviewContent === texContent) {
+        // nothing changed, reuse previewUrl
+        return;
+      }
+      await compilePreview();
+    }
+  };
   return (
-    <main className="min-h-screen bg-neutral-900 text-neutral-100 p-4 md:p-8">
+    <main className="min-h-screen bg-neutral-900 text-neutral-100 p-4 sm:p-6 md:p-8">
       <div className="mb-8">
         <h1 className="text-4xl md:text-5xl font-extrabold mb-2 text-blue-400 drop-shadow">Tailor your CV</h1>
         <p className="text-neutral-400 mb-4 text-lg font-medium">Paste your job description below. Your tailored LaTeX resume will be generated using Gemini AI.</p>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-start">
         {/* Left: JD input */}
         <div className="w-full">
           <Card className="bg-neutral-800 border border-neutral-700 shadow-lg">
@@ -172,24 +223,23 @@ export default function Page() {
                 value={jd}
                 onChange={(e) => setJd(e.target.value)}
                 placeholder="Paste job description here..."
-                rows={18}
-                className="w-full font-mono text-base bg-neutral-900 border border-neutral-700 rounded-lg p-4 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none min-h-[320px] shadow-sm text-neutral-100 placeholder:text-neutral-500"
-                style={{ minHeight: 320 }}
+                rows={12}
+                className="w-full font-mono text-base bg-neutral-900 border border-neutral-700 rounded-lg p-3 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none min-h-[220px] md:min-h-[320px] shadow-sm text-neutral-100 placeholder:text-neutral-500"
               />
-              <div className="flex gap-3 mt-4 flex-wrap">
-                <Button onClick={onTailor} disabled={loading || !jd} variant="default" className="w-full md:w-auto">
+              <div className="flex flex-col md:flex-row gap-3 mt-4 flex-wrap">
+                <Button onClick={onTailor} disabled={loading || !jd} variant="default" className="w-full md:w-auto transition transform duration-200 ease-out hover:scale-[1.03] hover:bg-blue-700">
                   {loading ? "Tailoring..." : "Tailor CV"}
                 </Button>
-                <Button onClick={onCopy} disabled={!result} variant="outline" className="w-full md:w-auto">Copy .tex</Button>
+                <Button onClick={onCopy} disabled={!result} variant="outline" className="w-full md:w-auto transition-colors duration-150 hover:bg-neutral-700/40">Copy .tex</Button>
                 {/* Create tarball on demand and provide download link once ready */}
                 <div className="w-full md:w-auto">
                   {!tarBlobUrl ? (
-                    <Button onClick={onCreateTar} variant="ghost" className="w-full">
+                     <Button onClick={onCreateTar} variant="ghost" className="w-full transition-colors duration-150 hover:bg-neutral-700/30">
                       Create & Download tarball
                     </Button>
                   ) : (
                     <a href={tarBlobUrl} download="archive.tar.bz2" className="w-full block">
-                      <Button variant="ghost" className="w-full">Download tarball</Button>
+                       <Button variant="ghost" className="w-full transition-colors duration-150 hover:bg-neutral-700/30">Download tarball</Button>
                     </a>
                   )}
                 </div>
@@ -207,11 +257,11 @@ export default function Page() {
         {/* Right: Tabs for LaTeX and PDF preview, with download button in tab bar */}
         <div className="w-full">
           <Card className="bg-neutral-800 border border-neutral-700 shadow-lg">
-            <div className="flex items-center border-b border-neutral-700 bg-neutral-900 rounded-t-xl">
-              <Tabs defaultValue={activeTab} onValueChange={setActiveTab} className="w-full">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 border-b border-neutral-700 bg-neutral-900 rounded-t-xl p-3">
+              <Tabs defaultValue={activeTab} onValueChange={onTabChange} className="w-full">
                 <TabsList className="flex gap-2 bg-neutral-900">
-                  <TabsTrigger value="latex" className="text-neutral-100">LaTeX</TabsTrigger>
-                  <TabsTrigger value="pdf" className="text-neutral-100">PDF Preview</TabsTrigger>
+                  <TabsTrigger value="latex" className="text-neutral-100 transition-colors duration-150 hover:text-blue-300">LaTeX</TabsTrigger>
+                  <TabsTrigger value="pdf" className="text-neutral-100 transition-colors duration-150 hover:text-blue-300">PDF Preview</TabsTrigger>
                 </TabsList>
               </Tabs>
               <a
@@ -219,31 +269,30 @@ export default function Page() {
                 download={activeTab === "latex" ? "resume.tex" : "resume.pdf"}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="ml-auto mr-4"
+                className="ml-0 sm:ml-auto mr-0 sm:mr-4 w-full sm:w-auto"
               >
-                <Button variant="secondary" size="sm" disabled={activeTab === "pdf" && !previewUrl} className="bg-blue-900 text-blue-200 border-blue-700 hover:bg-blue-800">
+                <Button variant="secondary" size="sm" disabled={activeTab === "pdf" && !previewUrl} className="w-full sm:w-auto bg-blue-900 text-blue-200 border-blue-700 hover:bg-blue-800 transition-colors duration-150">
                   Download {activeTab === "latex" ? ".tex" : "PDF"}
                 </Button>
               </a>
             </div>
             <div className="p-0">
               {activeTab === "latex" ? (
-                <div className="p-4">
+                <div className="p-3">
                   <textarea
                     value={result || baseTex}
                     onChange={(e) => setResult(e.target.value)}
                     placeholder="Tailored .tex will appear here..."
-                    rows={20}
-                    className="w-full font-mono text-sm bg-neutral-900 border border-neutral-700 rounded-lg p-4 min-h-[320px] focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none shadow-sm text-neutral-100 placeholder:text-neutral-500"
-                    style={{ minHeight: 320 }}
+                    rows={14}
+                    className="w-full font-mono text-sm bg-neutral-900 border border-neutral-700 rounded-lg p-3 min-h-[220px] md:min-h-[320px] focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none shadow-sm text-neutral-100 placeholder:text-neutral-500"
                   />
                 </div>
               ) : (
-                <div className="p-4">
+                <div className="p-3">
                   {previewUrl ? (
                     <iframe
                       src={previewUrl}
-                      className="w-full h-[600px] border rounded bg-neutral-900 text-neutral-100"
+                      className="w-full h-[48vh] md:h-[600px] border rounded bg-neutral-900 text-neutral-100"
                     />
                   ) : (
                     <div className="text-neutral-400 mt-6">Preview will appear here once compiled.</div>

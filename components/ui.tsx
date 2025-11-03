@@ -1,6 +1,7 @@
-// Shadcn UI imports for main app usage
-export { Tabs, TabsContent, TabsList, TabsTrigger } from "@/registry/new-york-v4/ui/tabs";
-export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/registry/new-york-v4/ui/card";
-export { Button } from "@/registry/new-york-v4/ui/button";
-export { Input } from "@/registry/new-york-v4/ui/input";
-export { Label } from "@/registry/new-york-v4/ui/label";
+// Re-export local shadcn-like components for app usage
+// These components live under components/components/ui/ (generated or hand-crafted)
+export { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/components/ui/tabs";
+export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/components/ui/card";
+export { Button } from "@/components/components/ui/button";
+export { Input } from "@/components/components/ui/input";
+export { Label } from "@/components/components/ui/label";

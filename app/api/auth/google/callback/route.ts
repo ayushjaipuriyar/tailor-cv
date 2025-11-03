@@ -1,6 +1,6 @@
 
+import { Buffer } from "buffer";
 import { NextResponse, type NextRequest } from "next/server";
-import { Buffer } from 'buffer';
 
 export const runtime = "nodejs";
 

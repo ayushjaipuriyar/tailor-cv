@@ -147,10 +147,11 @@ export async function POST(req: Request) {
 				throw new Error(`tar creation failed: ${String(e)}`);
 			}
 
-			// POST multipart form with the tarball
+			// POST multipart form with the tarball. Read file into memory and append as a Blob
 			const form = new FormData();
-			const stream = fs.createReadStream(tarPath);
-			form.append("file", stream, "archive.tar.bz2");
+			const fileBuf = fs.readFileSync(tarPath);
+			const blob = new Blob([fileBuf], { type: "application/x-bzip2" });
+			form.append("file", blob, "archive.tar.bz2");
 
 			const controller = new AbortController();
 			const timeout = setTimeout(() => controller.abort(), 120_000);
@@ -169,7 +170,6 @@ export async function POST(req: Request) {
 			const isPdfType = /pdf/i.test(contentType);
 			// Cleanup files
 			try {
-				stream.destroy();
 				fs.unlinkSync(tarPath);
 				fs.unlinkSync(texPath);
 				fs.rmdirSync(tmp);
