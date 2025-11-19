@@ -1,0 +1,71 @@
+name: Extension Release
+
+on:
+  push:
+    branches:
+      - main
+      - 'dev/**'
+      - 'feature/**'
+      - 'hotfix/**'
+    paths:
+      - 'extension/**'
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  release:
+    name: Release Extension
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          npm install --save-dev \
+            semantic-release@^22.0.0 \
+            @semantic-release/commit-analyzer@^11.0.0 \
+            @semantic-release/release-notes-generator@^12.0.0 \
+            @semantic-release/changelog@^6.0.0 \
+            @semantic-release/exec@^6.0.0 \
+            @semantic-release/git@^10.0.0 \
+            @semantic-release/github@^9.0.0
+
+      - name: Determine branch type and config
+        id: branch-config
+        run: |
+          BRANCH_NAME="${GITHUB_REF#refs/heads/}"
+          echo "Branch: $BRANCH_NAME"
+          
+          if [[ "$BRANCH_NAME" == "main" ]]; then
+            echo "config_file=.releaserc.extension.yaml" >> $GITHUB_OUTPUT
+            echo "release_type=production" >> $GITHUB_OUTPUT
+          else
+            echo "config_file=.releaserc.extension.prerelease.yaml" >> $GITHUB_OUTPUT
+            echo "release_type=prerelease" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Run semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Running semantic-release with config: ${{ steps.branch-config.outputs.config_file }}"
+          echo "Release type: ${{ steps.branch-config.outputs.release_type }}"
+          npx semantic-release --extends ${{ steps.branch-config.outputs.config_file }}
+        # ZIP packaging is handled by semantic-release exec plugin
+        # - Creates: cv-tailor-extension-v{version}.zip
+        # - Includes: All runtime files (js, html, css, manifest.json, icons)
+        # - Excludes: Development files (tests, .md, .gitignore, package.json)
+        # - Attached to GitHub release as artifact

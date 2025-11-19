@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Tailor Settings</title>
+    <link rel="stylesheet" href="settings.css">
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>CV Tailor Settings</h1>
+        </header>
+
+        <main class="content">
+            <section class="section">
+                <h2>Backend URL</h2>
+                <p class="description">
+                    Enter the URL where your CV Tailor backend is running.
+                </p>
+
+                <div class="form-group">
+                    <label for="backendUrl">Backend URL:</label>
+                    <input type="url" id="backendUrl" placeholder="http://localhost:3000" class="input" />
+                    <p class="hint">
+                        For local development: http://localhost:3000<br>
+                        For production: https://your-domain.com
+                    </p>
+                </div>
+
+                <div class="button-group">
+                    <button id="saveBtn" class="btn btn-primary">Save Settings</button>
+                    <button id="resetBtn" class="btn btn-secondary">Reset to Default</button>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Auto-Fill Profile</h2>
+                <p class="description">
+                    Configure your profile information for auto-filling job application forms.
+                </p>
+
+                <div class="form-group">
+                    <label for="fullName">Full Name:</label>
+                    <input type="text" id="fullName" placeholder="Ayush Jaipuriyar" class="input" />
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" placeholder="your.email@example.com" class="input" />
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone:</label>
+                    <input type="tel" id="phone" placeholder="+1 (555) 123-4567" class="input" />
+                </div>
+
+                <div class="form-group">
+                    <label for="location">Location:</label>
+                    <input type="text" id="location" placeholder="City, State/Country" class="input" />
+                </div>
+
+                <div class="form-group">
+                    <label for="linkedin">LinkedIn URL:</label>
+                    <input type="url" id="linkedin" placeholder="https://linkedin.com/in/yourprofile" class="input" />
+                </div>
+
+                <div class="form-group">
+                    <label for="github">GitHub URL:</label>
+                    <input type="url" id="github" placeholder="https://github.com/yourusername" class="input" />
+                </div>
+
+                <div class="form-group">
+                    <label for="portfolio">Portfolio/Website:</label>
+                    <input type="url" id="portfolio" placeholder="https://yourwebsite.com" class="input" />
+                </div>
+
+                <div class="form-group">
+                    <label for="yearsExperience">Years of Experience:</label>
+                    <input type="number" id="yearsExperience" placeholder="5" class="input" min="0" max="50" />
+                </div>
+
+                <div class="form-group">
+                    <label for="currentCompany">Current Company:</label>
+                    <input type="text" id="currentCompany" placeholder="Company Name" class="input" />
+                </div>
+
+                <div class="form-group">
+                    <label for="currentTitle">Current Title:</label>
+                    <input type="text" id="currentTitle" placeholder="Software Engineer" class="input" />
+                </div>
+
+                <div class="form-group">
+                    <label for="education">Highest Education:</label>
+                    <input type="text" id="education" placeholder="Bachelor's in Computer Science" class="input" />
+                </div>
+
+                <div class="form-group">
+                    <label for="coverLetter">Default Cover Letter (Optional):</label>
+                    <textarea id="coverLetter" placeholder="Your default cover letter text..." class="input"
+                        rows="6"></textarea>
+                    <p class="hint">
+                        This will be used when forms ask for a cover letter
+                    </p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Optional Settings</h2>
+                <p class="description">
+                    These settings are optional. If not provided, the backend will use its configured defaults.
+                </p>
+
+                <div class="form-group">
+                    <label for="apiKey">Gemini API Key (Optional):</label>
+                    <input type="password" id="apiKey" placeholder="Leave empty to use backend's API key"
+                        class="input" />
+                    <p class="hint">
+                        Only needed if you want to override the backend's API key
+                    </p>
+                </div>
+
+                <div class="form-group">
+                    <label for="baseTex">Base Resume LaTeX (Optional):</label>
+                    <textarea id="baseTex" placeholder="Leave empty to use backend's default resume" class="input"
+                        rows="10"></textarea>
+                    <p class="hint">
+                        Only needed if you want to override the backend's base resume
+                    </p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>About</h2>
+                <p class="description">
+                    CV Tailor Extension v1.0.0<br>
+                    This extension connects to your CV Tailor backend API and can auto-fill job application forms.
+                </p>
+            </section>
+        </main>
+
+        <!-- Success Toast -->
+        <div id="successToast" class="toast toast-success hidden">
+            <p id="successMessage"></p>
+        </div>
+
+        <!-- Error Toast -->
+        <div id="errorToast" class="toast toast-error hidden">
+            <p id="errorMessage"></p>
+        </div>
+    </div>
+
+    <script src="settings.js"></script>
+</body>
+
+</html>

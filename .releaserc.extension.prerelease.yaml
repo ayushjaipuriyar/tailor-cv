@@ -1,0 +1,24 @@
+branches:
+  - name: dev/*
+    prerelease: dev
+  - name: feature/*
+    prerelease: beta
+  - name: hotfix/*
+    prerelease: rc
+plugins:
+  - "@semantic-release/commit-analyzer"
+  - "@semantic-release/release-notes-generator"
+  - - "@semantic-release/changelog"
+    - changelogFile: "extension/CHANGELOG.md"
+  - - "@semantic-release/exec"
+    - prepareCmd: "node scripts/update-extension-version.js ${nextRelease.version}"
+      publishCmd: "cd extension && zip -r ../cv-tailor-extension-v${nextRelease.version}.zip . -x '*.git*' -x '*node_modules*' -x '*tests*' -x '*.md' -x 'package*.json'"
+  - - "@semantic-release/git"
+    - assets:
+        - "extension/manifest.json"
+        - "extension/CHANGELOG.md"
+      message: "chore(extension): release v${nextRelease.version} [skip ci]"
+  - - "@semantic-release/github"
+    - assets:
+        - path: "cv-tailor-extension-v*.zip"
+          label: "Chrome Extension Package (Prerelease)"

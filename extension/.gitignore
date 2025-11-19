@@ -1,0 +1,19 @@
+# Development files
+*.log
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build artifacts (if we add a build process later)
+dist/
+build/
+
+# Node modules (if we add npm scripts)
+node_modules/
+
+# Temporary files
+*.tmp

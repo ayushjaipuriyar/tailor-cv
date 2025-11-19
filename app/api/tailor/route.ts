@@ -16,6 +16,13 @@ type Body = {
 };
 
 export async function POST(req: Request) {
+	// Add CORS headers for Chrome extension
+	const headers = {
+		'Access-Control-Allow-Origin': '*',
+		'Access-Control-Allow-Methods': 'POST, OPTIONS',
+		'Access-Control-Allow-Headers': 'Content-Type',
+	};
+
 	try {
 		const {
 			jd,
@@ -39,7 +46,7 @@ export async function POST(req: Request) {
 		ent.count++;
 		tailorRate.set(ip, ent);
 		if (ent.count > TAILOR_RATE_MAX) {
-			return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+			return NextResponse.json({ error: "Too many requests" }, { status: 429, headers });
 		}
 		if (!jd || jd.trim().length < 16) {
 			return NextResponse.json(

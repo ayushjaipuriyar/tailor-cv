@@ -3,6 +3,7 @@ import { Button } from "@/components/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/components/ui/card";
 import { Label } from "@/components/components/ui/label";
 import { Tabs, TabsList, TabsTrigger } from "@/components/components/ui/tabs";
+import { KeywordExtractor } from "@/components/KeywordExtractor";
 import { useEffect, useState } from "react";
 
 export default function Page() {
@@ -53,18 +54,18 @@ export default function Page() {
       // revoke previous preview URL to avoid leaking memory and avoid stale caching
       try {
         if (previewUrl) URL.revokeObjectURL(previewUrl);
-      } catch {}
+      } catch { }
       setPreviewUrl(pdfUrl);
-  setLastPreviewContent(tailoredTex);
-  setActiveTab("pdf");
+      setLastPreviewContent(tailoredTex);
+      setActiveTab("pdf");
     } catch (err: any) {
       setError(err?.message || "Failed to generate PDF preview.");
     } finally {
       setLoading(false);
     }
   };
-  const onCopy = () => {};
-  const onDownload = () => {};
+  const onCopy = () => { };
+  const onDownload = () => { };
   const onCreateTar = async () => {
     setError("");
     setCompiling(true);
@@ -111,7 +112,7 @@ export default function Page() {
     return () => {
       try {
         if (previewUrl) URL.revokeObjectURL(previewUrl);
-      } catch {}
+      } catch { }
     };
     // only run cleanup when previewUrl changes or on unmount
   }, [previewUrl]);
@@ -120,7 +121,7 @@ export default function Page() {
     fetch("/base.tex")
       .then((r) => (r.ok ? r.text() : Promise.reject(new Error("Failed to load base.tex"))))
       .then(setBaseTex)
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   // ...existing logic for previewUrl effect and handlers...
@@ -133,7 +134,7 @@ export default function Page() {
     if (tarBlobUrl) {
       try {
         URL.revokeObjectURL(tarBlobUrl);
-      } catch {}
+      } catch { }
       setTarBlobUrl("");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -176,7 +177,7 @@ export default function Page() {
       const pdfUrl = URL.createObjectURL(pdfBlob);
       try {
         if (previewUrl) URL.revokeObjectURL(previewUrl);
-      } catch {}
+      } catch { }
       setPreviewUrl(pdfUrl);
       setLastPreviewContent(texContent);
       return true;
@@ -209,7 +210,7 @@ export default function Page() {
         <h1 className="text-4xl md:text-5xl font-extrabold mb-2 text-blue-400 drop-shadow">Tailor your CV</h1>
         <p className="text-neutral-400 mb-4 text-lg font-medium">Paste your job description below. Your tailored LaTeX resume will be generated using Gemini AI.</p>
       </div>
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-start">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-start">
         {/* Left: JD input */}
         <div className="w-full">
           <Card className="bg-neutral-800 border border-neutral-700 shadow-lg">
@@ -226,6 +227,7 @@ export default function Page() {
                 rows={12}
                 className="w-full font-mono text-base bg-neutral-900 border border-neutral-700 rounded-lg p-3 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none min-h-[220px] md:min-h-[320px] shadow-sm text-neutral-100 placeholder:text-neutral-500"
               />
+              <KeywordExtractor text={jd} />
               <div className="flex flex-col md:flex-row gap-3 mt-4 flex-wrap">
                 <Button onClick={onTailor} disabled={loading || !jd} variant="default" className="w-full md:w-auto transition transform duration-200 ease-out hover:scale-[1.03] hover:bg-blue-700">
                   {loading ? "Tailoring..." : "Tailor CV"}
@@ -234,12 +236,12 @@ export default function Page() {
                 {/* Create tarball on demand and provide download link once ready */}
                 <div className="w-full md:w-auto">
                   {!tarBlobUrl ? (
-                     <Button onClick={onCreateTar} variant="ghost" className="w-full transition-colors duration-150 hover:bg-neutral-700/30">
+                    <Button onClick={onCreateTar} variant="ghost" className="w-full transition-colors duration-150 hover:bg-neutral-700/30">
                       Create & Download tarball
                     </Button>
                   ) : (
                     <a href={tarBlobUrl} download="archive.tar.bz2" className="w-full block">
-                       <Button variant="ghost" className="w-full transition-colors duration-150 hover:bg-neutral-700/30">Download tarball</Button>
+                      <Button variant="ghost" className="w-full transition-colors duration-150 hover:bg-neutral-700/30">Download tarball</Button>
                     </a>
                   )}
                 </div>

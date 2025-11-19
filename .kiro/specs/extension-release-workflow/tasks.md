@@ -1,0 +1,73 @@
+# Implementation Plan
+
+- [x] 1. Create semantic-release configuration files for extension releases
+  - Create `.releaserc.extension.yaml` for production releases from main branch
+  - Create `.releaserc.extension.prerelease.yaml` for prereleases from development branches
+  - Configure plugins: commit-analyzer, release-notes-generator, changelog, exec, git, and github
+  - Set changelog file path to `extension/CHANGELOG.md`
+  - Configure exec plugin commands for version update and ZIP packaging
+  - Configure git plugin to commit manifest.json and CHANGELOG.md changes
+  - Configure github plugin to attach ZIP artifacts to releases
+  - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 2.1, 2.2, 2.3, 2.4, 3.1, 3.2, 3.3, 3.4, 4.1, 4.2, 4.3, 4.4, 6.1, 6.2, 6.3, 6.4_
+
+- [x] 2. Create version update script
+  - [x] 2.1 Implement Node.js script to update extension manifest.json version
+    - Create `scripts/update-extension-version.js` file
+    - Accept semantic version as command-line argument
+    - Read and parse `extension/manifest.json`
+    - Update the version field with new semantic version
+    - Write updated JSON back to file with proper formatting (2-space indentation)
+    - Add error handling for invalid version format, missing file, and malformed JSON
+    - _Requirements: 1.2, 1.3_
+  - [x] 2.2 Write unit tests for version update script
+    - Create test file for version update script
+    - Test valid version updates (major, minor, patch)
+    - Test invalid version format handling
+    - Test missing manifest.json file handling
+    - Test malformed JSON handling
+    - _Requirements: 1.2_
+
+- [x] 3. Create GitHub Actions workflow for extension releases
+  - [x] 3.1 Create workflow file with trigger configuration
+    - Create `.github/workflows/extension-release.yml` file
+    - Configure workflow to trigger on push to main, dev/*, feature/*, and hotfix/* branches
+    - Add path filter to trigger only on changes to `extension/**` files
+    - Set up required permissions (contents: write, issues: write, pull-requests: write)
+    - _Requirements: 5.1, 5.2, 5.3, 6.1_
+  - [x] 3.2 Implement release job with environment setup
+    - Configure Ubuntu runner
+    - Set up Node.js environment (version 18 or 20)
+    - Check out repository with full git history (fetch-depth: 0)
+    - Install semantic-release and required plugins as dependencies
+    - _Requirements: 1.1, 5.4_
+  - [x] 3.3 Add semantic-release execution step
+    - Determine branch type (main vs prerelease branches)
+    - Execute semantic-release with appropriate config file based on branch
+    - Set GITHUB_TOKEN environment variable for authentication
+    - Capture and display semantic-release output
+    - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 4.1, 4.2, 4.3, 4.4, 6.1, 6.2, 6.3_
+
+- [x] 4. Integrate ZIP packaging into release process
+  - Verify ZIP command is available in workflow runner
+  - Test ZIP creation excludes development files (tests, .md files, .gitignore)
+  - Ensure ZIP includes all runtime files (js, html, css, manifest.json, icons)
+  - Validate ZIP file naming follows pattern "cv-tailor-extension-v{version}.zip"
+  - _Requirements: 3.1, 3.2, 3.3, 3.4_
+
+- [x] 5. Add workflow validation and testing
+  - Create test branch to validate workflow triggers correctly
+  - Test workflow with different commit types (feat, fix, breaking change)
+  - Verify version updates in manifest.json after release
+  - Verify CHANGELOG.md generation in extension directory
+  - Verify GitHub release creation with correct tags and notes
+  - Verify ZIP artifact attachment to GitHub releases
+  - Test prerelease workflow on development branches
+  - Verify path filtering (workflow skips when non-extension files change)
+  - _Requirements: 1.1, 1.2, 1.3, 2.1, 2.2, 2.3, 2.4, 3.1, 3.2, 3.3, 3.4, 4.1, 4.2, 4.3, 4.4, 5.1, 5.2, 5.3, 6.1, 6.2, 6.3, 6.4_
+
+- [x] 6. Create documentation for release process
+  - Document conventional commit format requirements
+  - Document how to trigger releases (commit to main vs dev branches)
+  - Document how to download and install released extension ZIP files
+  - Add troubleshooting guide for common workflow failures
+  - _Requirements: 1.1, 4.1, 4.2, 6.1_

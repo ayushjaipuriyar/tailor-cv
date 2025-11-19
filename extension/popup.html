@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Tailor</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="spinner"></div>
+        <p class="loading-text">Processing...</p>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">CV Tailor</h1>
+            <button id="settingsBtn" class="settings-btn" title="Settings">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                    <path
+                        d="M17.43 10.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C12.46.2 12.25 0 12 0h-4c-.25 0-.46.2-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.23.24.42.49.42h4c.25 0 .46-.19.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM10 13c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3z" />
+                </svg>
+            </button>
+        </header>
+
+        <!-- Offline Banner -->
+        <div id="offlineBanner" class="offline-banner hidden">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="1" y1="1" x2="23" y2="23"></line>
+                <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path>
+                <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path>
+                <path d="M10.71 5.05A16 16 0 0 1 22.58 9"></path>
+                <path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"></path>
+                <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                <line x1="12" y1="20" x2="12.01" y2="20"></line>
+            </svg>
+            <span>You're offline. Viewing cached content.</span>
+        </div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <section class="section">
+                <div class="button-group-top">
+                    <button id="detectBtn" class="btn btn-secondary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        Detect from Page
+                    </button>
+                    <button id="autoFillBtn" class="btn btn-secondary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
+                        Auto-Fill Form
+                    </button>
+                </div>
+
+                <label for="jdInput" class="label">Job Description:</label>
+                <textarea id="jdInput" class="textarea"
+                    placeholder="Paste job description here, click 'Detect from Page', or right-click selected text and choose 'Tailor CV to this JD'"
+                    rows="12"></textarea>
+
+                <div class="company-info" id="companyInfo" style="display: none;">
+                    <span class="company-label">🏢 Company:</span>
+                    <span class="company-name" id="companyName"></span>
+                </div>
+
+                <div class="button-group">
+                    <button id="tailorBtn" class="btn btn-primary">Tailor Existing Resume</button>
+                    <button id="createBtn" class="btn btn-primary">Create New Resume</button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Error Toast -->
+        <div id="errorToast" class="toast toast-error hidden">
+            <div class="toast-content">
+                <strong id="errorTitle" class="toast-title"></strong>
+                <p id="errorMessage" class="toast-message"></p>
+            </div>
+            <button id="errorAction" class="toast-action"></button>
+        </div>
+
+        <!-- Success Toast -->
+        <div id="successToast" class="toast toast-success hidden">
+            <div class="toast-content">
+                <p id="successMessage" class="toast-message"></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="errors.js"></script>
+    <script src="validation.js"></script>
+    <script src="network.js"></script>
+    <script src="popup.js"></script>
+</body>
+
+</html>
